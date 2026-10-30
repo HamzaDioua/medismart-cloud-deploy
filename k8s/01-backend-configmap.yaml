@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmap
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://medismart-postgres:5432/medismart_db"
+  SPRING_SECURITY_USER_NAME: "admin"
+  JWT_EXPIRATION_MS: "86400000"
+  FRONTEND_URL: "http://localhost"
+  OAUTH2_REDIRECT_URI: "http://localhost/oauth2/redirect"
+  ATTACHMENTS_DIR: "/app/uploads"
+  GROQ_MODEL: "llama-3.3-70b-versatile"
+  GROQ_BASE_URL: "https://api.groq.com/openai/v1"
+  OCR_DATAPATH: "/app/tessdata"
+  OCR_LANGUAGE: "fra+eng"
+  LIVEKIT_URL: "ws://livekit-disabled:7880"
+  STRIPE_PUBLIC_KEY: "pk_test_sample"
+  MANAGEMENT_HEALTH_MAIL_ENABLED: "false"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
