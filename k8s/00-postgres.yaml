@@ -1,24 +1,24 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: medismart-postgres-pvc
+  name: postgres-pvc
+  labels:
+    app: medismart-postgres
 spec:
-  accessModes :
+  accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: medismart-postgres-deployment
+  name: medismart-postgres
+  labels:
+    app: medismart-postgres
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: medismart-postgres
@@ -28,49 +28,45 @@ spec:
         app: medismart-postgres
     spec:
       containers:
-        - name : postgre
-          image : postgres:16
-          ports: 
+        - name: postgres
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
             - containerPort: 5432
+              name: postgres
           env:
-            - name: postgre_db
+            - name: POSTGRES_DB
               value: "medismart_db"
             - name: POSTGRES_USER
               value: "medismart"
             - name: POSTGRES_PASSWORD
               value: "medismart_password"
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
-          readinessProbe:
-            exec:
-              command: ["pg_isready", "-U", "medismart", "-d", "medismart_db"]
-            initialDelaySeconds: 5
-            periodSeconds: 5
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: 100m
+              memory: 128Mi
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: 500m
+              memory: 256Mi
           volumeMounts:
-            - name: postgres-data
+            - name: postgres-storage
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: postgres-data
+        - name: postgres-storage
           persistentVolumeClaim:
-            claimName: medismart-postgres-pvc
-
+            claimName: postgres-pvc
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: medismart-postgres
+  labels:
+    app: medismart-postgres
 spec:
   type: ClusterIP
-  selector:
-    app: medismart-postgres
   ports:
     - port: 5432
       targetPort: 5432
+      name: postgres
+  selector:
+    app: medismart-postgres

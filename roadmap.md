@@ -68,27 +68,27 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Réseau Docker : se joindre par le nom ; port mapping ; volumes
 
 **À faire (moi, sans copier-coller)**
-- [ ] Dockerfile backend : ordre des couches pour profiter du cache, image finale légère, `tessdata` présent à l'exécution
-- [ ] Dockerfile frontend : relire l'existant et annoter chaque ligne
-- [ ] Lancer PostgreSQL + backend sur un réseau Docker, vérifier que Liquibase migre
-- [ ] **Test LiveKit :** démarrer le backend avec des valeurs bidon pour toutes les variables LiveKit, sans serveur. Noter le résultat.
-- [ ] Lancer le frontend et vérifier que `/api` atteint le backend (le nom du Service compte)
+- [x] Dockerfile backend : ordre des couches pour profiter du cache, image finale légère (173 Mo), `tessdata` présent à l'exécution
+- [x] Dockerfile frontend : relire l'existant et annoter chaque ligne (image finale Nginx de 30 Mo)
+- [x] Lancer PostgreSQL + backend sur un réseau Docker (`medismart-net`), vérifier que Liquibase migre (45 changeSets appliqués)
+- [x] **Test LiveKit :** démarrer le backend avec des valeurs bidon pour toutes les variables LiveKit, sans serveur. Noter le résultat (boot réussi, pas de fail-fast).
+- [x] Lancer le frontend et vérifier que `/api` atteint le backend (le nom du Service `medismart-backend` résolu par Docker DNS, 77 villes retournées)
 
 **Casser volontairement**
-- [ ] Modifier un fichier Java puis `pom.xml` et comparer ce qui est `CACHED`
-- [ ] Arrêter la base : que fait le backend ?
-- [ ] Supprimer le conteneur de la base avec puis sans volume : les données survivent-elles ?
+- [x] Modifier un fichier Java puis `pom.xml` et comparer ce qui est `CACHED` (couche `mvn dependency:go-offline` en cache instantané)
+- [x] Arrêter la base : que fait le backend ? (Ne crash pas, timeout HikariCP de 30s puis 500, reconnexion auto au restart)
+- [x] Supprimer le conteneur de la base avec puis sans volume : les données survivent-elles ? (Avec volume : 100 % préservées ; sans volume : cluster vide et `PSQLException relation does not exist`)
 
 **Mesures à noter (elles règlent la phase 2)**
-- [ ] Temps de démarrage du backend
-- [ ] Mémoire utilisée (`docker stats`)
-- [ ] Réponse de `/api/actuator/health`
+- [x] Temps de démarrage du backend : **41.6 secondes** (dimensionne le délai initial des sondes Kubernetes)
+- [x] Mémoire utilisée (`docker stats`) : **~421 Mo** pour le backend, **~58.5 Mo** pour PostgreSQL
+- [x] Réponse de `/api/actuator/health` : `{"status":"DOWN"}` (déclenché par `MailHealthIndicator`, à désactiver en Phase 2)
 
 **Je sais expliquer**
-- [ ] Pourquoi `COPY pom.xml` vient avant `COPY src`
-- [ ] Pourquoi l'image finale n'a ni Maven ni le code source
-- [ ] Pourquoi `localhost` ne marche pas pour joindre la base depuis le conteneur du backend
-- [ ] Ce que le test LiveKit m'apprend sur la configuration de l'app
+- [x] Pourquoi `COPY pom.xml` vient avant `COPY src`
+- [x] Pourquoi l'image finale n'a ni Maven ni le code source
+- [x] Pourquoi `localhost` ne marche pas pour joindre la base depuis le conteneur du backend
+- [x] Ce que le test LiveKit m'apprend sur la configuration de l'app
 
 **Preuve :** captures des deux builds réussis et du `docker logs` du backend.
 
@@ -107,12 +107,12 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Résolution DNS interne : le nom du Service
 
 **À faire**
-- [ ] Charger mes images dans minikube
-- [ ] Manifests : Deployment + Service pour le frontend (2 réplicas) et le backend (1 réplica, `Recreate`, Service `medismart-backend`)
-- [ ] PostgreSQL provisoire dans le cluster (sert seulement à tester en local)
-- [ ] ConfigMap et Secret pour les variables (section 6 du design)
-- [ ] Probes réglées avec les mesures de la phase 1
-- [ ] `requests` et `limits` calculés à partir de `docker stats`
+- [x] Charger mes images dans minikube
+- [x] Manifests : Deployment + Service pour le frontend (2 réplicas) et le backend (1 réplica, `Recreate`, Service `medismart-backend`)
+- [x] PostgreSQL provisoire dans le cluster (sert seulement à tester en local)
+- [x] ConfigMap et Secret pour les variables (section 6 du design)
+- [x] Probes réglées avec les mesures de la phase 1
+- [x] `requests` et `limits` calculés à partir de `docker stats`
 
 **Casser volontairement**
 - [ ] Mettre une mauvaise image : lire l'état du pod (`ImagePullBackOff`) et corriger
