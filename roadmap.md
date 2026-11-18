@@ -143,22 +143,22 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Secret Manager : secret, version, accès
 
 **À faire**
-- [ ] Projet GCP dédié, API activées
-- [ ] Artifact Registry (Docker, `europe-west1`)
-- [ ] Pousser à la main une image avec un tag SHA
-- [ ] Compte de service CI avec des rôles minimaux
-- [ ] Workload Identity Federation pour GitHub
-- [ ] Secret Manager : créer les secrets de l'application (valeurs de test)
-- [ ] Bucket pour l'état Terraform
+- [x] Projet GCP dédié, API activées
+- [x] Artifact Registry (Docker, `europe-west1`)
+- [x] Pousser à la main une image avec un tag SHA
+- [x] Compte de service CI avec des rôles minimaux
+- [x] Workload Identity Federation pour GitHub
+- [x] Secret Manager : créer les secrets de l'application (valeurs de test)
+- [x] Bucket pour l'état Terraform
 
 **Casser volontairement**
-- [ ] Donner un rôle trop faible au compte de service : lire l'erreur de permission
-- [ ] Pousser une image avec un mauvais nom de dépôt
+- [x] Donner un rôle trop faible au compte de service : lire l'erreur de permission
+- [x] Pousser une image avec un mauvais nom de dépôt
 
 **Je sais expliquer**
-- [ ] Pourquoi le moindre privilège, avec un exemple de mon projet
-- [ ] Comment GitHub s'authentifie sans clé secrète
-- [ ] Pourquoi le tag est un SHA et non `latest`
+- [x] Pourquoi le moindre privilège, avec un exemple de mon projet
+- [x] Comment GitHub s'authentifie sans clé secrète
+- [x] Pourquoi le tag est un SHA et non `latest`
 
 **Preuve :** image visible dans Artifact Registry, secrets créés.
 
@@ -175,18 +175,18 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Dépendances entre ressources (implicites et explicites)
 
 **À faire**
-- [ ] Créer un bucket simple, puis le modifier, puis le détruire
-- [ ] Passer l'état dans le bucket distant
-- [ ] Écrire `terraform/foundation` (le socle de la phase 3) en Terraform
+- [x] Créer un bucket simple, puis le modifier, puis le détruire
+- [x] Passer l'état dans le bucket distant
+- [x] Écrire `terraform/foundation` (le socle de la phase 3) en Terraform
 
 **Casser volontairement**
-- [ ] Modifier une ressource à la main dans la console, puis lancer `plan` : que montre-t-il ?
-- [ ] Supprimer le fichier d'état local (avec un état distant en place) : que se passe-t-il ?
+- [x] Modifier une ressource à la main dans la console, puis lancer `plan` : que montre-t-il ?
+- [x] Supprimer le fichier d'état local (avec un état distant en place) : que se passe-t-il ?
 
 **Je sais expliquer**
-- [ ] Ce que fait `plan` et pourquoi on le lit avant chaque `apply`
-- [ ] Pourquoi un fichier d'état ne va jamais sur GitHub
-- [ ] Pourquoi deux dossiers : socle permanent et environnement jetable
+- [x] Ce que fait `plan` et pourquoi on le lit avant chaque `apply`
+- [x] Pourquoi un fichier d'état ne va jamais sur GitHub
+- [x] Pourquoi deux dossiers : socle permanent et environnement jetable
 
 ---
 
@@ -209,14 +209,14 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Ordre de création et de suppression des ressources dépendantes
 
 **Casser volontairement**
-- [ ] Lancer `destroy` dans le mauvais ordre : lire l'erreur, comprendre la dépendance
-- [ ] Créer Cloud SQL sans le couloir privé : lire l'erreur
+- [x] Lancer `destroy` dans le mauvais ordre : lire l'erreur, comprendre la dépendance
+- [x] Créer Cloud SQL sans le couloir privé : lire l'erreur
 
 **Je sais expliquer**
-- [ ] Pourquoi Cloud SQL n'est pas accessible depuis Internet
-- [ ] Pourquoi le nom d'instance Cloud SQL porte un suffixe aléatoire
-- [ ] Comment un pod obtient le droit d'écrire dans un bucket sans clé
-- [ ] Pourquoi le bucket des fichiers est dans l'environnement jetable
+- [x] Pourquoi Cloud SQL n'est pas accessible depuis Internet
+- [x] Pourquoi le nom d'instance Cloud SQL porte un suffixe aléatoire
+- [x] Comment un pod obtient le droit d'écrire dans un bucket sans clé
+- [x] Pourquoi le bucket des fichiers est dans l'environnement jetable
 
 **Rappel coût :** `terraform destroy` à la fin de **chaque** session. Cloud SQL se facture même la nuit.
 
@@ -227,24 +227,24 @@ Ces entrées sont mes meilleures histoires d'entretien.
 **Objectif :** faire tourner l'app sur le vrai cluster, à la main, avant d'automatiser.
 
 **À faire**
-- [ ] Récupérer les accès au cluster et vérifier `kubectl`
-- [ ] Adapter les manifests de la phase 2 : image depuis Artifact Registry (tag SHA), `SPRING_DATASOURCE_URL` vers l'IP privée de Cloud SQL, secrets depuis Secret Manager
-- [ ] Monter le bucket dans le pod du backend, pointer `ATTACHMENTS_DIR` dessus
-- [ ] Service `LoadBalancer` avec l'IP statique, `FRONTEND_URL` mis à jour
-- [ ] Restreindre le CORS à l'origine du frontend
-- [ ] Tester : inscription, connexion, upload d'un fichier, relecture du fichier après redémarrage du pod
+- [x] Récupérer les accès au cluster et vérifier `kubectl`
+- [x] Adapter les manifests de la phase 2 : image depuis Artifact Registry (tag SHA), `SPRING_DATASOURCE_URL` vers l'IP privée de Cloud SQL, secrets depuis Secret Manager
+- [x] Monter le bucket dans le pod du backend, pointer `ATTACHMENTS_DIR` dessus
+- [x] Service `LoadBalancer` avec l'IP statique, `FRONTEND_URL` mis à jour
+- [x] Restreindre le CORS à l'origine du frontend
+- [x] Tester : inscription, connexion, upload d'un fichier, relecture du fichier après redémarrage du pod
 
 **Casser volontairement**
-- [ ] Redéployer une nouvelle image : le fichier uploadé est-il toujours là ?
-- [ ] Retirer le droit d'accès au bucket : lire l'erreur
-- [ ] Mauvais mot de passe de base : lire les logs
+- [x] Redéployer une nouvelle image : le fichier uploadé est-il toujours là ?
+- [x] Retirer le droit d'accès au bucket : lire l'erreur
+- [x] Mauvais mot de passe de base : lire les logs
 
 **Plan B si le montage FUSE pose problème :** PVC. Noter le problème dans le carnet de bord.
 
 **Je sais expliquer**
-- [ ] Le chemin d'une requête, du navigateur à la base
-- [ ] Ce que fait le sidecar FUSE injecté dans le pod
-- [ ] Pourquoi mon fichier survit à un redéploiement
+- [x] Le chemin d'une requête, du navigateur à la base
+- [x] Ce que fait le sidecar FUSE injecté dans le pod
+- [x] Pourquoi mon fichier survit à un redéploiement
 
 **Preuves :** cluster actif, pods `Running`, app accessible via l'IP publique, fichier relu après redéploiement.
 
@@ -261,20 +261,20 @@ Ces entrées sont mes meilleures histoires d'entretien.
 - Pourquoi le CI et le CD sont séparés (décision 6)
 
 **À faire**
-- [ ] Un workflow qui fait seulement un `echo`, puis qui s'authentifie à GCP
-- [ ] CI du backend : build, push vers Artifact Registry, tag = SHA du commit
-- [ ] CI du frontend : idem
-- [ ] CD manuel dans `medismart-cloud-deploy` : paramètre = tag, mise à jour du déploiement
-- [ ] Vérifier qu'un `push` sans cluster ne casse pas le CI
+- [x] Un workflow qui fait seulement un `echo`, puis qui s'authentifie à GCP
+- [x] CI du backend : build, push vers Artifact Registry, tag = SHA du commit
+- [x] CI du frontend : idem
+- [x] CD manuel dans `medismart-cloud-deploy` : paramètre = tag, mise à jour du déploiement
+- [x] Vérifier qu'un `push` sans cluster ne casse pas le CI
 
 **Casser volontairement**
-- [ ] Mauvais nom de pool d'identité : lire l'erreur d'authentification
-- [ ] Lancer le CD sans cluster : observer l'échec et le comprendre
+- [x] Mauvais nom de pool d'identité : lire l'erreur d'authentification
+- [x] Lancer le CD sans cluster : observer l'échec et le comprendre
 
 **Je sais expliquer**
-- [ ] Pourquoi le déploiement est manuel
-- [ ] Ce que contient le tag d'une image et comment retrouver le code correspondant
-- [ ] Comment revenir à une version précédente
+- [x] Pourquoi le déploiement est manuel
+- [x] Ce que contient le tag d'une image et comment retrouver le code correspondant
+- [x] Comment revenir à une version précédente
 
 **Preuves :** pipeline CI vert, image taguée SHA dans Artifact Registry, run CD vert.
 
@@ -285,23 +285,23 @@ Ces entrées sont mes meilleures histoires d'entretien.
 **Objectif :** transformer un projet qui marche en projet qui se présente.
 
 **À faire**
-- [ ] Captures d'écran : cluster actif, pods `Running`, pipeline vert, Artifact Registry, app accessible, bucket avec les fichiers
-- [ ] Schéma d'architecture **redessiné par moi** (`docs/architecture.png`)
-- [ ] README complet : contexte, architecture, décisions et sacrifices, étapes pour reproduire, coûts réels, améliorations possibles
-- [ ] Tableau de correspondance ACE (section 10 du design) complété
-- [ ] Optionnel : Cloud Logging et Monitoring (un tableau de bord et une alerte), pour combler le trou identifié
-- [ ] Vidéo courte de démonstration (créer, déployer, tester, détruire)
-- [ ] `terraform destroy` final, facturation vérifiée le lendemain
-- [ ] Repo public, ligne ajoutée au CV, lien en tête du profil GitHub
+- [x] Captures d'écran : cluster actif, pods `Running`, pipeline vert, Artifact Registry, app accessible, bucket avec les fichiers
+- [x] Schéma d'architecture **redessiné par moi** (`docs/architecture.png`)
+- [x] README complet : contexte, architecture, décisions et sacrifices, étapes pour reproduire, coûts réels, améliorations possibles
+- [x] Tableau de correspondance ACE (section 10 du design) complété
+- [x] Optionnel : Cloud Logging et Monitoring (un tableau de bord et une alerte), pour combler le trou identifié
+- [x] Vidéo courte de démonstration (créer, déployer, tester, détruire)
+- [x] `terraform destroy` final, facturation vérifiée le lendemain
+- [x] Repo public, ligne ajoutée au CV, lien en tête du profil GitHub
 
 **Je sais expliquer (répétition d'entretien, 30 secondes par décision, sans notes)**
-- [ ] 1 seul réplica pour le backend
-- [ ] Cloud SQL en IP privée
-- [ ] Fichiers dans Cloud Storage via FUSE
-- [ ] Frontend public et backend privé
-- [ ] CI automatique et CD manuel
-- [ ] Tag SHA
-- [ ] Un problème que j'ai rencontré et comment je l'ai réparé
+- [x] 1 seul réplica pour le backend
+- [x] Cloud SQL en IP privée
+- [x] Fichiers dans Cloud Storage via FUSE
+- [x] Frontend public et backend privé
+- [x] CI automatique et CD manuel
+- [x] Tag SHA
+- [x] Un problème que j'ai rencontré et comment je l'ai réparé
 
 ---
 
